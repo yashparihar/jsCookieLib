@@ -1,3 +1,7 @@
+import {cookieMap} from './cookieMap.js';
+
+var cookie = new cookieMap();
+
 try {
     var u = document.getElementById("user");
     var p = document.getElementById("pass");
@@ -24,8 +28,8 @@ try {
 
 
 function checkStatus() {
-    console.log(getCookie("auth"));
-    if (getCookie("auth") == "yash") {
+    console.log(cookie.getCookie("auth"));
+    if (cookie.getCookie("auth") == "yash") {
         if (window.location.pathname != "/home") window.location.pathname = "/home"
         return true;
     } else {
@@ -36,7 +40,7 @@ function checkStatus() {
 
 function checkLogin() {
     if (u.value == "yash" && p.value == "password") {
-        setCookie("auth", "yash", 2);
+        cookie.setCookie("auth", "yash", 2);
         window.location.pathname = "/home";
     } else {
         alert("something got wrong");
@@ -46,7 +50,7 @@ function checkLogin() {
 function logOff() {
     event.preventDefault();
     console.log('something happends');
-    deleteCookie("auth");
+    cookie.deleteCookie("auth");
     window.location.pathname = "/";
 }
 

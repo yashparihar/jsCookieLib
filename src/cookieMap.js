@@ -1,5 +1,58 @@
+export class cookieMap{
+
+    constructor(){}
+
+    getCookieList() {
+        if (document.cookie == "") return false;
+
+        var cookStr = document.cookie.split(";");
+        console.log(cookStr);
+
+        var str = cookStr;
+        var cookieList = {};
+
+        for (var each in cookStr) {
+            var ele = cookStr[each].split("=");
+            cookieList[ele[0].trim()] = ele[1].trim();
+        }
+        return cookieList;
+    }
 
 
+    getCookie(key) {
+        var cookieList = this.getCookieList();
+        return cookieList[key];
+    }
+
+
+    setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname.trim() + "=" + cvalue.trim() + ";" + expires + ";path=/";
+    }
+
+    isCookie(key) {
+        var ele = this.getCookie(key);
+
+        if (ele) {
+            return ele;
+        } else {
+            this.setCookie(key, "some_value", 365);
+        }
+
+    }
+
+    deleteCookie(key) {
+        console.log(this.getCookie(key));
+        if (this.getCookie(key)) {
+            console.log("setting cookke to getdel")
+            this.setCookie(key, "", -4);
+        }
+    }
+}
+
+/*
 function getCookieList() {
     if (document.cookie=="") return false;
 
@@ -7,7 +60,6 @@ function getCookieList() {
     console.log(cookStr);
 
     var str = cookStr;
-
     var cookieList = {};
 
     for (var each in cookStr) {
@@ -49,3 +101,6 @@ function deleteCookie(key) {
         setCookie(key,"",-4);
     }
 }
+
+*/
+
