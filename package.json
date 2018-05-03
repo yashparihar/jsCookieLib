@@ -1,0 +1,15 @@
+{
+  "name": "cookielib",
+  "version": "1.0.0",
+  "description": "library to play with cookie",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"http-server"
+  },
+  "keywords": [
+    "cookie"
+  ],
+  "author": "yash",
+  "license": "ISC"
+}
