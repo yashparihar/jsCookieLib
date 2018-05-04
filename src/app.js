@@ -1,4 +1,6 @@
 import {cookieMap} from './cookieMap.js';
+import {SHA512} from './hashing.js';
+import {postData} from './apiCallutil.js';
 
 var cookie = new cookieMap();
 
@@ -17,7 +19,7 @@ try {
 (function () {
     checkStatus();
     var bodyElement = document.querySelector('body');
-    console.log("loded first");
+    console.log("loaded first");
     document.addEventListener('readystatechange', function () {
         if (document.readyState === 'complete') {
             console.log("in readdy state");
@@ -28,8 +30,8 @@ try {
 
 
 function checkStatus() {
-    console.log(cookie.getCookie("auth"));
-    if (cookie.getCookie("auth") == "yash") {
+    var obj = cookie.getCookie("auth");
+    if (obj && obj.uname == "yash") {
         if (window.location.pathname != "/home") window.location.pathname = "/home"
         return true;
     } else {
@@ -38,13 +40,48 @@ function checkStatus() {
     }
 }
 
+
+
+
 function checkLogin() {
+// "email": "teaglo@mailinator.com",
+//    "password": "23bbe686a76e0aa6bb045aade01b506714e31664987d573a427b6710d5a442c064d58dc329bb66680b39887462911ab1e93b2207cb5f34bd6d1d9537a66605b2"
+/*
     if (u.value == "yash" && p.value == "password") {
-        cookie.setCookie("auth", "yash", 2);
+        var authObj = {
+            uname: u.value,
+            "desig": "dev"
+        }
+        cookie.setCookie("auth", authObj, 2);
         window.location.pathname = "/home";
     } else {
-        alert("something got wrong");
+        //  alert("something got wrong");
     }
+*/
+    var data = {
+        "email": u.value,
+        "password": SHA512(p.value)
+    }
+
+    postData('http://192.168.3.121:7000/auth/adminsignin', data)
+        .then(response=> {
+
+            if (response.status === 1){
+                console.log(response.message);
+                console.log(response.data);
+                //Redirect to home page using history api
+
+            } else if (response.status === 0) {
+                alert(response.message);
+                
+            }
+
+        })
+        .catch(error => {
+            alert("Network issue");
+            console.error(error)
+        })
+
 }
 
 function logOff() {

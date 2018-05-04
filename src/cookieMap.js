@@ -1,6 +1,7 @@
-export class cookieMap{
+export class cookieMap {
 
-    constructor(){}
+    constructor() {
+    }
 
     getCookieList() {
         if (document.cookie == "") return false;
@@ -13,7 +14,7 @@ export class cookieMap{
 
         for (var each in cookStr) {
             var ele = cookStr[each].split("=");
-            cookieList[ele[0].trim()] = ele[1].trim();
+            cookieList[ele[0].trim()] = ele[1];
         }
         return cookieList;
     }
@@ -21,20 +22,25 @@ export class cookieMap{
 
     getCookie(key) {
         var cookieList = this.getCookieList();
-        return cookieList[key];
+        var res = cookieList[key];
+        if (res)
+            return JSON.parse(decodeURI(res));
     }
 
+    encodingURI(val) {
+        var uri = JSON.stringify(val);
+        return encodeURI(uri);
+    }
 
     setCookie(cname, cvalue, exdays) {
         var d = new Date();
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
-        document.cookie = cname.trim() + "=" + cvalue.trim() + ";" + expires + ";path=/";
+        document.cookie = cname.trim() + "=" + this.encodingURI(cvalue) + ";" + expires + ";path=/";
     }
 
     isCookie(key) {
         var ele = this.getCookie(key);
-
         if (ele) {
             return ele;
         } else {
@@ -46,7 +52,7 @@ export class cookieMap{
     deleteCookie(key) {
         console.log(this.getCookie(key));
         if (this.getCookie(key)) {
-            console.log("setting cookke to getdel")
+            console.log("setting cookie expiretime to negative");
             this.setCookie(key, "", -4);
         }
     }
