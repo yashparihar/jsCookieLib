@@ -41,47 +41,42 @@ function checkStatus() {
 }
 
 
-
-
 function checkLogin() {
 // "email": "teaglo@mailinator.com",
 //    "password": "23bbe686a76e0aa6bb045aade01b506714e31664987d573a427b6710d5a442c064d58dc329bb66680b39887462911ab1e93b2207cb5f34bd6d1d9537a66605b2"
-/*
-    if (u.value == "yash" && p.value == "password") {
-        var authObj = {
-            uname: u.value,
-            "desig": "dev"
+    /*
+        if (u.value == "yash" && p.value == "password") {
+            var authObj = {
+                uname: u.value,
+                "desig": "dev"
+            }
+            cookie.setCookie("auth", authObj, 2);
+            window.location.pathname = "/home";
+        } else {
+            //  alert("something got wrong");
         }
-        cookie.setCookie("auth", authObj, 2);
-        window.location.pathname = "/home";
-    } else {
-        //  alert("something got wrong");
-    }
-*/
+    */
     var data = {
         "email": u.value,
         "password": SHA512(p.value)
     }
 
     postData('http://192.168.3.121:7000/auth/adminsignin', data)
-        .then(response=> {
+        .then(response => {
 
-            if (response.status === 1){
+            if (response.status === 1) {
                 console.log(response.message);
                 console.log(response.data);
                 //Redirect to home page using history api
 
             } else if (response.status === 0) {
                 alert(response.message);
-                
             }
-
         })
         .catch(error => {
             alert("Network issue");
             console.error(error)
         })
-
 }
 
 function logOff() {
